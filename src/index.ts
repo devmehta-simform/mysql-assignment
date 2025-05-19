@@ -2,12 +2,14 @@ import express from 'express';
 import { userRouter } from './routes';
 import { sequelize } from './utils/sequelizeProvider';
 import { umzug } from './utils/umzugProvider';
+import { productRouter } from './routes/product.routes';
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 app.use('/user', userRouter);
+app.use('/product', productRouter);
 
 app.listen(port, async () => {
   try {

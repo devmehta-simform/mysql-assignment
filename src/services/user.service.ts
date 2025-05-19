@@ -2,7 +2,7 @@ import { User } from '../models/user';
 import { type RequestHandler } from 'express';
 
 export const getAllUsers: RequestHandler = async (req, res) => {
-  const users = await User.findAll({ where: { delete_at: null } });
+  const users = await User.findAll({ where: { deleted_at: null } });
   res.status(200).json({ users });
 };
 
