@@ -6,6 +6,7 @@ export const User = sequelize.define('Users', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false,
+    autoIncrement: true,
   },
   email: {
     type: DataTypes.STRING(50),
@@ -34,5 +35,10 @@ export const User = sequelize.define('Users', {
   date_of_birth: {
     type: DataTypes.DATE,
     allowNull: false,
+  },
+  deleted_at: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: null,
   },
 });

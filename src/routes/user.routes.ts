@@ -1,8 +1,9 @@
 import express from 'express';
-import { getAllUsers } from '../services/user.service';
+import { createUser, deleteUserById, getAllUsers, getUserById, updateUserById } from '../services/user.service';
 
 const userRouter = express.Router();
 
-userRouter.route('/').get(getAllUsers);
+userRouter.route('/').get(getAllUsers).post(createUser);
+userRouter.route('/:id').get(getUserById).patch(updateUserById).delete(deleteUserById);
 
 export { userRouter };
