@@ -2,6 +2,7 @@ import express from 'express';
 import { userRouter, productRouter, orderRouter } from './routes';
 import { sequelize } from './utils/sequelizeProvider';
 import { umzug } from './utils/umzugProvider';
+import { orderDetailsRouter } from './routes/orderDetails.routes';
 
 const app = express();
 const port = 3000;
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use('/user', userRouter);
 app.use('/product', productRouter);
 app.use('/order', orderRouter);
+app.use('/order-details', orderDetailsRouter);
 
 app.listen(port, async () => {
   try {
