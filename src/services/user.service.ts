@@ -7,10 +7,11 @@ import { col, FindOptions, fn } from 'sequelize';
 
 export const getAllUsers: RequestHandler = async (req, res) => {
   const filter: FindOptions = { where: { deleted_at: null } };
+  const filterBy = req.query['filter']?.toString();
   const sortBy = req.query['sortBy']?.toString();
   const limit = req.query['limit']?.toString();
-  if (sortBy) {
-    switch (sortBy) {
+  if (filterBy && sortBy) {
+    switch (filterBy) {
       case 'active': {
         filter.attributes = [
           [col('Users.name'), 'name'],
@@ -18,7 +19,16 @@ export const getAllUsers: RequestHandler = async (req, res) => {
         ];
         filter.include = [{ model: Order, attributes: [], where: { deleted_at: null } }];
         filter.group = ['Users.id'];
-        filter.order = [[fn('COUNT', col('Orders.id')), 'DESC']];
+        if (sortBy === 'desc') filter.order = [[fn('COUNT', col('Orders.id')), 'desc']];
+        if (sortBy === 'asc') filter.order = [[fn('COUNT', col('Orders.id')), 'asc']];
+        filter.subQuery = false;
+        break;
+      }
+      case 'inactive': {
+        filter.attributes = [[col('Users.name'), 'name']];
+        filter.include = [{ model: Order, attributes: [], where: { deleted_at: null }, required: false }];
+        filter.where = { ...filter.where, '$Orders.id$': null };
+        filter.group = ['Users.id'];
         filter.subQuery = false;
         break;
       }

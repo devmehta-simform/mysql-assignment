@@ -9,6 +9,7 @@ export const getAllOrders: RequestHandler = async (req, res) => {
     },
   };
   const status = req.query['status']?.toString();
+  const filterBy = req.query['filter']?.toString();
   const sortBy = req.query['sortBy']?.toString();
   const limit = req.query['limit']?.toString();
   if (status) {
@@ -24,10 +25,12 @@ export const getAllOrders: RequestHandler = async (req, res) => {
       }
     }
   }
-  if (sortBy) {
-    switch (sortBy) {
+
+  if (filterBy && sortBy) {
+    switch (filterBy) {
       case 'recent': {
-        filter.order = [['order_date', 'desc']];
+        if (sortBy === 'desc') filter.order = [['order_date', 'desc']];
+        else if (sortBy === 'asc') filter.order = [['order_date', 'asc']];
         break;
       }
     }
