@@ -9,6 +9,8 @@ export const getAllOrders: RequestHandler = async (req, res) => {
     },
   };
   const status = req.query['status']?.toString();
+  const sortBy = req.query['sortBy']?.toString();
+  const limit = req.query['limit']?.toString();
   if (status) {
     console.log(typeof status, status);
     switch (status) {
@@ -21,6 +23,17 @@ export const getAllOrders: RequestHandler = async (req, res) => {
         break;
       }
     }
+  }
+  if (sortBy) {
+    switch (sortBy) {
+      case 'recent': {
+        filter.order = [['order_date', 'desc']];
+        break;
+      }
+    }
+  }
+  if (limit) {
+    filter.limit = parseInt(limit);
   }
   const orders = await Order.findAll(filter);
   res.status(200).json({ orders });
