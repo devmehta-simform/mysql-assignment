@@ -3,9 +3,31 @@ import { type RequestHandler } from 'express';
 import { sequelize } from '../utils/sequelizeProvider';
 import { Product } from '../models/product';
 import { Order } from '../models/order';
+import { col, FindOptions, fn } from 'sequelize';
 
 export const getAllUsers: RequestHandler = async (req, res) => {
-  const users = await User.findAll({ where: { deleted_at: null } });
+  const filter: FindOptions = { where: { deleted_at: null } };
+  const sortBy = req.query['sortBy']?.toString();
+  const limit = req.query['limit']?.toString();
+  if (sortBy) {
+    switch (sortBy) {
+      case 'active': {
+        filter.attributes = [
+          [col('Users.name'), 'name'],
+          [fn('count', col('Orders.id')), 'numberOfOrders'],
+        ];
+        filter.include = [{ model: Order, attributes: [], where: { deleted_at: null } }];
+        filter.group = ['Users.id'];
+        filter.order = [[fn('COUNT', col('Orders.id')), 'DESC']];
+        filter.subQuery = false;
+        break;
+      }
+    }
+  }
+  if (limit) {
+    filter.limit = parseInt(limit);
+  }
+  const users = await User.findAll(filter);
   res.status(200).json({ users });
 };
 
