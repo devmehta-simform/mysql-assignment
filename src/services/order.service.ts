@@ -1,8 +1,28 @@
 import { type RequestHandler } from 'express';
 import { Order } from '../models/order';
+import { FindOptions } from 'sequelize';
 
 export const getAllOrders: RequestHandler = async (req, res) => {
-  const orders = await Order.findAll({ where: { deleted_at: null } });
+  const filter: FindOptions = {
+    where: {
+      deleted_at: null,
+    },
+  };
+  const status = req.query['status']?.toString();
+  if (status) {
+    console.log(typeof status, status);
+    switch (status) {
+      case 'undelivered': {
+        console.log(status);
+        filter.where = {
+          ...filter.where,
+          status: 'pending',
+        };
+        break;
+      }
+    }
+  }
+  const orders = await Order.findAll(filter);
   res.status(200).json({ orders });
 };
 
