@@ -1,6 +1,7 @@
 import { type RequestHandler } from 'express';
 import { Order } from '../models/order';
-import { FindOptions } from 'sequelize';
+import { col, FindOptions, fn } from 'sequelize';
+import { Product } from '../models/product';
 
 export const getAllOrders: RequestHandler = async (req, res) => {
   const filter: FindOptions = {
@@ -32,6 +33,24 @@ export const getAllOrders: RequestHandler = async (req, res) => {
         if (sortBy === 'desc') filter.order = [['order_date', 'desc']];
         else if (sortBy === 'asc') filter.order = [['order_date', 'asc']];
         break;
+      }
+      case 'price': {
+        filter.include = [
+          {
+            model: Product,
+            attributes: [],
+            where: { deleted_at: null },
+            through: { attributes: [], where: { deleted_at: null } },
+          },
+        ];
+        filter.attributes = [
+          [col('Orders.id'), 'id'],
+          [fn('sum', col('Products.price')), 'price'],
+        ];
+        filter.group = ['Orders.id'];
+        filter.subQuery = false;
+        if (sortBy === 'desc') filter.order = [[fn('sum', col('Products.price')), 'desc']];
+        else if (sortBy === 'asc') filter.order = [[fn('sum', col('Products.price')), 'asc']];
       }
     }
   }
