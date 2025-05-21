@@ -1,8 +1,42 @@
+import { col, FindOptions, fn } from 'sequelize';
 import { Product } from '../models/product';
 import { type RequestHandler } from 'express';
+import { Order } from '../models/order';
 
 export const getAllProducts: RequestHandler = async (req, res) => {
-  const products = await Product.findAll({ where: { deleted_at: null } });
+  const filter: FindOptions = { where: { deleted_at: null } };
+  const filterBy = req.query['filter']?.toString();
+  const sortBy = req.query['sortBy']?.toString();
+  const limit = req.query['limit']?.toString();
+  if (filterBy && sortBy) {
+    switch (filterBy) {
+      case 'purchased': {
+        filter.attributes = [
+          [col('Products.name'), 'name'],
+          [fn('count', 'Products.id'), 'numberOfProductsSold'],
+        ];
+        filter.include = [
+          {
+            model: Order,
+            where: { deleted_at: null },
+            attributes: [],
+            through: { attributes: [], where: { deleted_at: null } },
+            required: false,
+          },
+        ];
+        filter.group = ['Products.id', 'Products.name'];
+        filter.subQuery = false;
+        if (sortBy) {
+          if (sortBy === 'desc') filter.order = [[fn('count', 'Products.id'), 'desc']];
+          else if (sortBy === 'asc') filter.order = [[fn('count', 'Products.id'), 'asc']];
+        }
+      }
+    }
+  }
+  if (limit) {
+    filter.limit = parseInt(limit);
+  }
+  const products = await Product.findAll(filter);
   res.status(200).json({ products });
 };
 

@@ -103,6 +103,7 @@ export const getOrdersOfUser: RequestHandler = async (req, res) => {
             attributes: ['id', 'name', 'description', 'price'],
             where: { deleted_at: null },
             through: {
+              where: { deleted_at: null },
               attributes: [],
             },
           },
