@@ -4,6 +4,25 @@ import { type RequestHandler } from 'express';
 import { Order } from '../models/order';
 
 export const getAllProducts: RequestHandler = async (req, res) => {
+  /*  
+  #swagger.parameters['filter'] = {
+    in: 'query',
+    schema: {
+        '@enum': ['purchased']
+    }
+  }
+  #swagger.parameters['$ref'] = ['#/components/parameters/sortByQueryParam','#components/parameters/limitQueryParam']
+  #swagger.description = "get top n purchased products"
+  #swagger.responses[200] = {
+    content:{
+      "application/json": {
+        schema: {
+          $ref: "#/definitions/TopNPurchasedProducts"
+        }
+      }
+    }
+  }
+  */
   const filter: FindOptions = { where: { deleted_at: null } };
   const filterBy = req.query['filter']?.toString();
   const sortBy = req.query['sortBy']?.toString();
@@ -41,6 +60,14 @@ export const getAllProducts: RequestHandler = async (req, res) => {
 };
 
 export const createProduct: RequestHandler = async (req, res) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: { 
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ProductCreateDto" }
+              }
+            }
+    }  */
   const product = req.body;
   const createdProduct = await Product.create(product);
   res.status(201).json(createdProduct);
@@ -58,6 +85,14 @@ export const getProductById: RequestHandler = async (req, res) => {
 };
 
 export const updateProductById: RequestHandler = async (req, res) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: { 
+              "application/json": {
+                schema: { $ref: "#/components/schemas/ProductUpdateDto" }
+              }
+            }
+    }  */
   const productId = req.params['id'];
   await Product.update(
     { ...req.body },

@@ -6,6 +6,26 @@ import { Order } from '../models/order';
 import { col, FindOptions, fn } from 'sequelize';
 
 export const getAllUsers: RequestHandler = async (req, res) => {
+  /*  
+  #swagger.parameters['filter'] = {
+    in: 'query',
+    schema: {
+        '@enum': ['active', 'inactive']
+    }
+  }
+  #swagger.parameters['$ref'] = ['#/components/parameters/sortByQueryParam','#components/parameters/limitQueryParam']
+  #swagger.description = 'get top n (limit) active/inactive user'
+  #swagger.responses[200] = {
+    content:{
+      "application/json": {
+        schema: {
+          $ref: "#/definitions/TopNActiveInactiveUsersResponse"
+        }
+      }
+    }
+  }
+  */
+
   const filter: FindOptions = { where: { deleted_at: null } };
   const filterBy = req.query['filter']?.toString();
   const sortBy = req.query['sortBy']?.toString();
@@ -42,6 +62,14 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 };
 
 export const createUser: RequestHandler = async (req, res) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: { 
+              "application/json": {
+                schema: { $ref: "#/components/schemas/UserCreateDto" }
+              }
+            }
+    }  */
   const user = req.body;
   const createdUser = await User.create(user);
   res.status(201).json(createdUser);
@@ -59,6 +87,14 @@ export const getUserById: RequestHandler = async (req, res) => {
 };
 
 export const updateUserById: RequestHandler = async (req, res) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: { 
+              "application/json": {
+                schema: { $ref: "#/components/schemas/UserUpdateDto" }
+              }
+            }
+    }  */
   const userId = req.params['id'];
   await User.update(
     { ...req.body },
@@ -79,6 +115,17 @@ export const deleteUserById: RequestHandler = async (req, res) => {
 };
 
 export const getOrdersOfUser: RequestHandler = async (req, res) => {
+  /*  #swagger.description = 'get orders of user with userid = id' 
+      #swagger.responses[200] = {
+        content:{
+          "application/json": {
+            schema: {
+              $ref: "#/definitions/UserWithOrdersResponse"
+            }
+          }
+        }
+      }
+  */
   const userId = req.params['id'];
   const orders = await User.findAll({
     where: { deleted_at: null, id: userId },

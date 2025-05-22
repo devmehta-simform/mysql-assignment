@@ -4,6 +4,22 @@ import { col, FindOptions, fn } from 'sequelize';
 import { Product } from '../models/product';
 
 export const getAllOrders: RequestHandler = async (req, res) => {
+  /*  
+  #swagger.parameters['filter'] = {
+    in: 'query',
+    schema: {
+        '@enum': ['recent', 'price']
+    }
+  }
+  #swagger.parameters['status'] = {
+    in: 'query',
+    schema: {
+        '@enum': ['undelivered']
+    }
+  }
+  #swagger.parameters['$ref'] = ['#/components/parameters/sortByQueryParam','#components/parameters/limitQueryParam']
+  #swagger.description = 'get all orders with filtering by status, recent date, total price, and limit'
+  */
   const filter: FindOptions = {
     where: {
       deleted_at: null,
@@ -51,6 +67,7 @@ export const getAllOrders: RequestHandler = async (req, res) => {
         filter.subQuery = false;
         if (sortBy === 'desc') filter.order = [[fn('sum', col('Products.price')), 'desc']];
         else if (sortBy === 'asc') filter.order = [[fn('sum', col('Products.price')), 'asc']];
+        break;
       }
     }
   }
@@ -62,6 +79,14 @@ export const getAllOrders: RequestHandler = async (req, res) => {
 };
 
 export const createOrder: RequestHandler = async (req, res) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: { 
+              "application/json": {
+                schema: { $ref: "#/components/schemas/OrderCreateDto" }
+              }
+            }
+    }  */
   const order = req.body;
   const createdOrder = await Order.create(order);
   res.status(201).json(createdOrder);
@@ -79,6 +104,14 @@ export const getOrderById: RequestHandler = async (req, res) => {
 };
 
 export const updateOrderById: RequestHandler = async (req, res) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: { 
+              "application/json": {
+                schema: { $ref: "#/components/schemas/OrderUpdateDto" }
+              }
+            }
+    }  */
   const orderId = req.params['id'];
   await Order.update(
     { ...req.body },

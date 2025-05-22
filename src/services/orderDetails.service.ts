@@ -7,6 +7,14 @@ export const getAllOrderDetails: RequestHandler = async (req, res) => {
 };
 
 export const createOrderDetails: RequestHandler = async (req, res) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: { 
+              "application/json": {
+                schema: { $ref: "#/components/schemas/OrderDetailsCreateDto" }
+              }
+            }
+    }  */
   const orderDetails = req.body;
   const createdOrderDetails = await OrderDetails.create(orderDetails);
   res.status(201).json(createdOrderDetails);
@@ -24,6 +32,14 @@ export const getOrderDetailsById: RequestHandler = async (req, res) => {
 };
 
 export const updateOrderDetailsById: RequestHandler = async (req, res) => {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: { 
+              "application/json": {
+                schema: { $ref: "#/components/schemas/OrderDetailsUpdateDto" }
+              }
+            }
+    }  */
   const orderDetailsId = req.params['id'];
   await OrderDetails.update(
     { ...req.body },

@@ -1,7 +1,11 @@
 import express from 'express';
-import { userRouter, productRouter, orderRouter } from './routes';
 import { sequelize } from './utils/sequelizeProvider';
 import { umzug } from './utils/umzugProvider';
+import swaggerUi from 'swagger-ui-express';
+import swaggerFile from './swagger-output.json';
+import { userRouter } from './routes/user.routes';
+import { productRouter } from './routes/product.routes';
+import { orderRouter } from './routes/order.routes';
 import { orderDetailsRouter } from './routes/orderDetails.routes';
 
 const app = express();
@@ -12,6 +16,7 @@ app.use('/user', userRouter);
 app.use('/product', productRouter);
 app.use('/order', orderRouter);
 app.use('/order-details', orderDetailsRouter);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.listen(port, async () => {
   try {
