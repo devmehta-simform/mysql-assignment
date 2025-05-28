@@ -1,0 +1,845 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "mysql assignment",
+    "description": "mysql assignment using sequelize orm",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
+    },
+    {
+      "url": "https://localhost:3000/"
+    }
+  ],
+  "paths": {
+    "/user/": {
+      "get": {
+        "description": "get top n (limit) active/inactive user",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["active", "inactive"]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/sortByQueryParam"
+          },
+          {
+            "$ref": "#components/parameters/limitQueryParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopNActiveInactiveUsersResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}/orders": {
+      "get": {
+        "description": "get orders of user with userid = id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWithOrdersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/": {
+      "get": {
+        "description": "get top n purchased products",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["purchased"]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/sortByQueryParam"
+          },
+          {
+            "$ref": "#components/parameters/limitQueryParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopNPurchasedProducts"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductCreateDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductUpdateDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/": {
+      "get": {
+        "description": "get all orders with filtering by status, recent date, total price, and limit",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["recent", "price"]
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["undelivered"]
+            }
+          },
+          {
+            "$ref": "#/components/parameters/sortByQueryParam"
+          },
+          {
+            "$ref": "#components/parameters/limitQueryParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderCreateDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderUpdateDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order-details/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailsCreateDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order-details/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailsUpdateDto"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "sortByQueryParam": {
+        "name": "sortBy",
+        "in": "query",
+        "schema": {
+          "enum": ["asc", "desc"]
+        }
+      },
+      "limitQueryParam": {
+        "name": "limit",
+        "in": "query",
+        "schema": {
+          "type": "number"
+        }
+      }
+    },
+    "schemas": {
+      "UserCreateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the user"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address of the user"
+          },
+          "password": {
+            "type": "string",
+            "description": "The password for the user"
+          },
+          "address": {
+            "type": "string",
+            "description": "The home address of the user"
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "The phone number of the user (10 digits)"
+          },
+          "age": {
+            "type": "string",
+            "description": "The age of the user",
+            "maxLength": 3,
+            "pattern": "^[0-9]{3}$"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date",
+            "description": "The birth date of the user (in YYYY-MM-DD format)"
+          }
+        },
+        "required": ["name", "email", "password", "address", "phone_number", "age", "date_of_birth"]
+      },
+      "ProductCreateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the product"
+          },
+          "description": {
+            "type": "string",
+            "description": "A brief description of the product"
+          },
+          "price": {
+            "type": "string",
+            "description": "The price of the product"
+          }
+        },
+        "required": ["name", "description", "price"]
+      },
+      "OrderCreateDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["delivered", "pending", "cancelled"],
+            "description": "The current status of the order"
+          },
+          "expected_delivery_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The expected delivery date of the order"
+          },
+          "order_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date the order was placed"
+          },
+          "user_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The ID of the user who placed the order"
+          }
+        },
+        "required": ["status", "expected_delivery_date", "order_date", "user_id"]
+      },
+      "OrderDetailsCreateDto": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The ID of the associated order"
+          },
+          "product_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The ID of the associated product"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "The quantity of the product in this order detail"
+          },
+          "price": {
+            "type": "string",
+            "description": "The price of the product in the order detail"
+          }
+        },
+        "required": ["order_id", "product_id", "quantity", "price"]
+      },
+      "UserUpdateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the user"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email address of the user"
+          },
+          "password": {
+            "type": "string",
+            "description": "The password for the user"
+          },
+          "address": {
+            "type": "string",
+            "description": "The home address of the user"
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "The phone number of the user (10 digits)"
+          },
+          "age": {
+            "type": "string",
+            "description": "The age of the user",
+            "maxLength": 3,
+            "pattern": "^[0-9]{3}$"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date",
+            "description": "The birth date of the user (in YYYY-MM-DD format)"
+          }
+        }
+      },
+      "ProductUpdateDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the product"
+          },
+          "description": {
+            "type": "string",
+            "description": "A brief description of the product"
+          },
+          "price": {
+            "type": "string",
+            "description": "The price of the product"
+          }
+        }
+      },
+      "OrderUpdateDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["delivered", "pending", "cancelled"],
+            "description": "The current status of the order"
+          },
+          "expected_delivery_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The expected delivery date of the order"
+          },
+          "order_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date the order was placed"
+          },
+          "user_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The ID of the user who placed the order"
+          }
+        }
+      },
+      "OrderDetailsUpdateDto": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The ID of the associated order"
+          },
+          "product_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The ID of the associated product"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "The quantity of the product in this order detail"
+          },
+          "price": {
+            "type": "string",
+            "description": "The price of the product in the order detail"
+          }
+        }
+      },
+      "UserWithOrdersResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email",
+              "example": "john.doe@example.com"
+            },
+            "name": {
+              "type": "string",
+              "example": "John Doe"
+            },
+            "address": {
+              "type": "string",
+              "example": "123 Main St, Anytown, USA"
+            },
+            "Orders": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["delivered", "pending", "cancelled"],
+                    "example": "pending"
+                  },
+                  "order_date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-03-25"
+                  },
+                  "expected_delivery_date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-04-10"
+                  },
+                  "days_left_before_delivery": {
+                    "type": "integer",
+                    "example": -42,
+                    "description": "Days remaining until delivery (negative if overdue)"
+                  },
+                  "Products": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Wireless Headphones"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "High-quality noise-cancelling Bluetooth headphones"
+                        },
+                        "price": {
+                          "type": "string",
+                          "example": "129.99"
+                        }
+                      },
+                      "required": ["id", "name", "description", "price"]
+                    }
+                  }
+                },
+                "required": ["id", "status", "order_date", "expected_delivery_date", "Products"]
+              }
+            }
+          },
+          "required": ["email", "name", "address", "Orders"]
+        }
+      },
+      "TopNActiveInactiveUsersResponse": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Jane Smith"
+                },
+                "numberOfOrders": {
+                  "type": "integer",
+                  "example": 3
+                }
+              },
+              "required": ["name", "numberOfOrders"]
+            }
+          }
+        },
+        "required": ["users"]
+      },
+      "TopNPurchasedProducts": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Wireless Headphones"
+                },
+                "numberOfProductsSold": {
+                  "type": "integer",
+                  "example": 2
+                }
+              },
+              "required": ["name", "numberOfProductsSold"]
+            }
+          }
+        },
+        "required": ["products"]
+      }
+    }
+  }
+}

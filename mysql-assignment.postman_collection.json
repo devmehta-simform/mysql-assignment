@@ -1,0 +1,584 @@
+{
+  "info": {
+    "_postman_id": "5cefee1b-eade-483e-be00-3db848cce09b",
+    "name": "mysql-assignment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "43007932"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "get user by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/user/3",
+              "host": ["{{Base_Url}}"],
+              "path": ["user", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/user",
+              "host": ["{{Base_Url}}"],
+              "path": ["user"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"{{$randomEmail}}\",\n    \"name\": \"{{$randomFullName}}\",\n    \"password\": \"password@123\",\n    \"address\":\"{{$randomStreetAddress}}\",\n    \"phone_number\":\"9078653421\",\n    \"age\":53,\n    \"date_of_birth\":\"{{$randomDatePast}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/user",
+              "host": ["{{Base_Url}}"],
+              "path": ["user"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/user/10",
+              "host": ["{{Base_Url}}"],
+              "path": ["user", "10"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update user",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Mikey Johnson\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/user/3",
+              "host": ["{{Base_Url}}"],
+              "path": ["user", "3"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "product",
+      "item": [
+        {
+          "name": "get all products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/product",
+              "host": ["{{Base_Url}}"],
+              "path": ["product"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get product by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/product/3",
+              "host": ["{{Base_Url}}"],
+              "path": ["product", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"{{$randomProductName}}\",\n    \"description\":\"{{$randomPhrase}}\",\n    \"price\":\"{{$randomPrice}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/product",
+              "host": ["{{Base_Url}}"],
+              "path": ["product"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update product",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"my product\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/product/3",
+              "host": ["{{Base_Url}}"],
+              "path": ["product", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete product by id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/product/3",
+              "host": ["{{Base_Url}}"],
+              "path": ["product", "3"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "order",
+      "item": [
+        {
+          "name": "get all orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/order",
+              "host": ["{{Base_Url}}"],
+              "path": ["order"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get order by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/order/11",
+              "host": ["{{Base_Url}}"],
+              "path": ["order", "11"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n     \"status\": \"delivered\",\n    \"expected_delivery_date\": \"2025-06-10\",\n    \"order_date\": \"2025-03-25\",\n    \"deleted_at\": null,\n    \"user_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/order",
+              "host": ["{{Base_Url}}"],
+              "path": ["order"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update order",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"cancelled\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/order/11",
+              "host": ["{{Base_Url}}"],
+              "path": ["order", "11"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete order by id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/order/11",
+              "host": ["{{Base_Url}}"],
+              "path": ["order", "11"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "order-details",
+      "item": [
+        {
+          "name": "get all order-details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/order-details",
+              "host": ["{{Base_Url}}"],
+              "path": ["order-details"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get order-details by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/order-details/17",
+              "host": ["{{Base_Url}}"],
+              "path": ["order-details", "17"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create order-details",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"order_id\":\"12\",\n    \"product_id\":\"3\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/order-details",
+              "host": ["{{Base_Url}}"],
+              "path": ["order-details"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update order-details",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"product_id\": \"4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/order-details/18",
+              "host": ["{{Base_Url}}"],
+              "path": ["order-details", "18"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete order-details by id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Base_Url}}/order-details/17",
+              "host": ["{{Base_Url}}"],
+              "path": ["order-details", "17"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "queries",
+      "item": [
+        {
+          "name": "get order details for user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/user/2/orders",
+              "host": ["{{Base_Url}}"],
+              "path": ["user", "2", "orders"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "top 5 users with most orders (active users)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/user?filter=active&sortBy=desc&limit=5",
+              "host": ["{{Base_Url}}"],
+              "path": ["user"],
+              "query": [
+                {
+                  "key": "filter",
+                  "value": "active"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "users with no orders (inactive user)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/user?filter=inactive&sortBy=desc",
+              "host": ["{{Base_Url}}"],
+              "path": ["user"],
+              "query": [
+                {
+                  "key": "filter",
+                  "value": "inactive"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "desc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get undelivered orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/order?status=undelivered",
+              "host": ["{{Base_Url}}"],
+              "path": ["order"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "undelivered"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "recent 5 orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/order?filter=recent&sortBy=desc&limit=5",
+              "host": ["{{Base_Url}}"],
+              "path": ["order"],
+              "query": [
+                {
+                  "key": "filter",
+                  "value": "recent"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "most expensive order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/order?filter=price&sortBy=desc&limit=1",
+              "host": ["{{Base_Url}}"],
+              "path": ["order"],
+              "query": [
+                {
+                  "key": "filter",
+                  "value": "price"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "least expensive order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/order?filter=price&sortBy=asc&limit=1",
+              "host": ["{{Base_Url}}"],
+              "path": ["order"],
+              "query": [
+                {
+                  "key": "filter",
+                  "value": "price"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "asc"
+                },
+                {
+                  "key": "limit",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "top 5 most purchased products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Base_Url}}/product?filter=purchased&sortBy=desc&limit=5",
+              "host": ["{{Base_Url}}"],
+              "path": ["product"],
+              "query": [
+                {
+                  "key": "filter",
+                  "value": "purchased"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
